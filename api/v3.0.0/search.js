@@ -6,19 +6,32 @@
  *
  **/
 
-var Util = require("../../util");
+var Util        = require("../../util");
+var querystring	= require("querystring");
 
 function list (options, callback) {
     var self = this;
 
     var url = Util.createUrl.apply(self, ["search", options]);
     var reqOptions = {
-        url: url,
+        url: url
     };
+    
+    self.Client.request(reqOptions, callback);
+}
 
+function yList (options, callback) {
+    var self	= this;
+	var url		= 'https://gdata.youtube.com/feeds/api/users/';
+	url			+= options.channelId + '/uploads?' + querystring.stringify(options);
+    var reqOptions = {
+        url: url
+    };
+    
     self.Client.request(reqOptions, callback);
 }
 
 module.exports = {
-    list: list
+    list	: list,
+	yList	: yList
 };
