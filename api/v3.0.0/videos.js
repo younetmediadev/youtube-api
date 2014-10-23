@@ -6,14 +6,15 @@
  *
  **/
 
-var Util = require("../../util");
+var Util        = require("../../util");
+var querystring	= require("querystring");
 
 function getRating (options, callback) {
     var self = this;
 
     var url = Util.createUrl.apply(self, ["videos/getRating", options]);
     var reqOptions = {
-        url: url,
+        url: url
     };
 
     self.Client.request(reqOptions, callback);
@@ -24,17 +25,18 @@ function list (options, callback) {
 
     var url = Util.createUrl.apply(self, ["videos", options]);
     var reqOptions = {
-        url: url,
+        url: url
     };
 
     self.Client.request(reqOptions, callback);
 }
 
 function comments (options, callback) {
-    var self = this;
+    var self	= this;
+	var url		= 'https://gdata.youtube.com/feeds/api/videos/';
 
     var reqOptions = {
-        url: 'https://gdata.youtube.com/feeds/api/videos/'+options.videoId+'/comments?alt=json',
+        url: url + options.videoId + '/comments?' + querystring.stringify(options)
     };
 
     self.Client.request(reqOptions, callback);
@@ -58,7 +60,7 @@ function getData (options, callback) {
     var self = this;
 
     var reqOptions = {
-        url: 'https://gdata.youtube.com/feeds/api/users/'+options.userId+'?alt=json'
+        url: 'https://gdata.youtube.com/feeds/api/users/'+options.userId+'?alt=json&key=' + options.key
     };
 
     self.Client.request(reqOptions, callback);
