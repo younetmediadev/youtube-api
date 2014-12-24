@@ -9,12 +9,14 @@
 "use strict";
 var Request = require("request");
 var Api     = require("./api/v3.0.0/index");
+var _       = require("underscore");
 
 var Client = module.exports = function(config) {
 };
 
 (function() {
-    var config = {};
+    var config  = {};
+    var proxy   = {};
     /**
      *  Client#authenticate(options) -> null
      *      - options (Object): Object containing the access token
@@ -66,6 +68,15 @@ var Client = module.exports = function(config) {
         return config = conf;
     };
 
+    this.setProxy = function(conf)
+    {
+        return proxy = conf;
+    };
+    
+    this.getProxy = function(conf)
+    {
+        return proxy;
+    };
     /**
      *  Client#request(options, callback) -> null
      *      - options (Object): parameters to send as the request body
@@ -91,6 +102,7 @@ var Client = module.exports = function(config) {
             reqOptions.json = true;
         }
 
+        _.extends(reqOptions, this.getProxy());
         Request(reqOptions, function (err, res, body) {
 
             if (!err && res.statusCode == 200) {
@@ -98,6 +110,7 @@ var Client = module.exports = function(config) {
             }
 
             if (body && body.error) {
+                console.log(options, body.error);
                 err = body.error.message || body.error;
             }
 
