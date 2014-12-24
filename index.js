@@ -123,8 +123,7 @@ var Client = module.exports = function(config) {
                 return callback(null, body);
             }
 
-            if (body && body.error) {
-                console.log(options, body.error);
+            if (body && body.error) {            
                 err = body.error.message || body.error;
             }
 
@@ -137,6 +136,7 @@ var Client = module.exports = function(config) {
             console.error(
                  "\n---- Submit an issue with the following information ----" +
                  "\nIssues: https://github.com/IonicaBizau/youtube-api/issues" +
+                 "\nParams: "       + JSON.stringify(reqOptions) +
                  "\nDate: "         + new Date().toString() +
                  "\nError: "        + JSON.stringify(err) +
                  "\nStatus Code:: " + JSON.stringify(res.statusCode) +
