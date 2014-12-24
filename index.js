@@ -102,9 +102,23 @@ var Client = module.exports = function(config) {
             reqOptions.json = true;
         }
 
-        _.extend(reqOptions, this.getProxy());
-        Request(reqOptions, function (err, res, body) {
-
+        var proxyObj    = this.getProxy()
+        var defaults    = {};
+        if(proxyObj.host)
+        {
+            var auth = '';
+            if( proxyObj.user && proxyObj.pass )
+            {
+                auth = (proxyObj.user +':'+ proxyObj.pass) + '@';
+            }
+            defaults.proxy = 'http://' + auth + proxyObj.host;
+            if( proxyObj.port )
+            {
+                defaults.proxy += (':' + proxyObj.port);
+            }
+        }
+        var r = Request.defaults(defaults);
+        r(reqOptions, function (err, res, body) { 
             if (!err && res.statusCode == 200) {
                 return callback(null, body);
             }
