@@ -102,7 +102,7 @@ var Client = module.exports = function(config) {
             reqOptions.json = true;
         }
 
-        _.extends(reqOptions, this.getProxy());
+        _.extend(reqOptions, this.getProxy());
         Request(reqOptions, function (err, res, body) {
 
             if (!err && res.statusCode == 200) {
