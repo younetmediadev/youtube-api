@@ -6,17 +6,19 @@
  *
  **/
 
-module.exports = function () {
+module.exports = function() {
     var apis = [
         "activities",
         "channelBanners",
         "channels",
+        "comments",
         "guideCategories",
         "playlistItems",
         "playlists",
         "search",
         "subscriptions",
         "thumbnails",
+        "users",
         "videoCategories",
         "videos"
     ];
