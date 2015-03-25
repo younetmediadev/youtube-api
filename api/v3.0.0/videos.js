@@ -56,16 +56,6 @@ function rate (options, callback) {
     callback(null, {"error": "Not yet implemented"});
 }
 
-function getData (options, callback) {
-    var self = this;
-
-    var reqOptions = {
-        url: 'https://gdata.youtube.com/feeds/api/users/'+options.userId+'?alt=json&key=' + options.key
-    };
-
-    self.Client.request(reqOptions, callback);
-}
-
 module.exports = {
     getRating: getRating,
     list: list,
