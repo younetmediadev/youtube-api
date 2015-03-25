@@ -6,26 +6,43 @@
  *
  **/
 
-var Util = require("util");
-var API_URL = "https://www.googleapis.com/youtube/v3/";
+var Util            = require("util");
+var querystring     = require("querystring");
+var API_URL         = "https://www.googleapis.com/youtube/v3/";
+var API_URL_V1      = "https://www.googleapis.com/plus/v1/";
+var API_URL_GDATA   = "https://gdata.youtube.com/feeds/api/";
 
-function createUrl (api, options) {
+function getAuth(options)
+{
+    var auth = this.Client.getConfig().auth || {};
 
-    var url = API_URL + api;
-
-    switch((this.Client.getConfig().auth || {}).type) {
+    switch (auth.type)
+    {
         case 'key':
-            options.key = (this.Client.getConfig().auth || {}).key;
+            options.key = auth.key;
             break;
         case 'oauth':
-            options.access_token = (this.Client.getConfig().auth || {}).token;
+            options.access_token = auth.token;
             break;
+        default:
+            throw new Error('Unknown auth type', auth.type);
     }
 
+    return options;
+}
+
+function createUrl(api, options)
+{
+    var url = API_URL + api;
+    options = getAuth.call(this, options);
 
     var i = -1;
-    for (var opt in options) {
-        if (options[opt] === undefined) { continue; }
+    for (var opt in options)
+    {
+        if (options[opt] === undefined)
+        {
+            continue;
+        }
         var value = options[opt];
         url += (++i === 0 ? "?" : "&") + opt + "=" + value;
     }
@@ -33,4 +50,21 @@ function createUrl (api, options) {
     return url;
 }
 
-exports.createUrl = createUrl;
+function createUrlV1(action, options)
+{
+    options = getAuth.call(this, options);
+    var url = API_URL_V1 + action + '?' + querystring.stringify(options);
+    return url;
+}
+
+function createUrlGdata(action, options)
+{
+    options = getAuth.call(this, options);
+    var url = API_URL_GDATA + action + '?' + querystring.stringify(options);
+    return url;
+}
+
+module.exports = {
+    createUrl: createUrl,
+    createUrlV1: createUrlV1
+};
