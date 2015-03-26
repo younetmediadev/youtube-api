@@ -63,6 +63,5 @@ module.exports = {
     insert: insert,
     update: update,
     delete: deleteItem,
-    rate: rate,
-    getData: getData
+    rate: rate
 };
