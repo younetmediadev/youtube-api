@@ -66,5 +66,6 @@ function createUrlGdata(action, options)
 
 module.exports = {
     createUrl: createUrl,
-    createUrlV1: createUrlV1
+    createUrlV1: createUrlV1,
+    createUrlGdata: createUrlGdata
 };
