@@ -32,14 +32,13 @@ function list (options, callback) {
 }
 
 function comments (options, callback) {
-    var self	= this;
-	var url		= 'https://gdata.youtube.com/feeds/api/videos/';
-
+    var action = 'commentThreads';
+    var url = Util.createUrl.apply(this, [action, options]);
     var reqOptions = {
-        url: url + options.videoId + '/comments?' + querystring.stringify(options)
+        url: url
     };
 
-    self.Client.request(reqOptions, callback);
+    this.Client.request(reqOptions, callback);
 }
 
 function insert (options, callback) {
