@@ -103,7 +103,13 @@ var Client = module.exports = function(config) {
         }
 
         var proxyObj    = this.getProxy()
-        var defaults    = {};
+        var defaults    = {
+            headers: {
+                'Accept-Encoding'   : 'gzip',
+                'User-Agent'        : 'gzip'
+            }
+        };
+
         if(proxyObj.host)
         {
             var auth = '';
