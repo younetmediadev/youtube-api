@@ -88,7 +88,9 @@ var Client = module.exports = function(config) {
      **/
     this.request = function(options, callback) {
 
-        var reqOptions = {};
+        var reqOptions = {
+            gzip: true
+        };
 
         if (typeof options === "string") {
             reqOptions.url = options;
