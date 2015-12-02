@@ -13,8 +13,8 @@
 var Util = require("../../util");
 
 function list (options, callback) {
-    var action = 'activities/' + options.id + '/comments';
-    var url = Util.createUrlV1.apply(this, [action, options]);
+    var action = 'comments';
+    var url = Util.createUrl.apply(this, [action, options]);
     var reqOptions = {
         url: url
     };
