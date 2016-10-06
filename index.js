@@ -10,6 +10,7 @@
 var Request = require("request");
 var Api     = require("./api/v3.0.0/index");
 var _       = require("underscore");
+var fetch   = require('fetch');
 
 var Client = module.exports = function(config) {
 };
@@ -112,31 +113,44 @@ var Client = module.exports = function(config) {
             }
         };
 
+        var url = reqOptions.url;
+        var _options = {};
+        _options.headers = {};
         if(proxyObj.host)
         {
             var auth = '';
             if( proxyObj.user && proxyObj.pass )
             {
-                auth = (proxyObj.user +':'+ proxyObj.pass) + '@';
+                //auth = (proxyObj.user +':'+ proxyObj.pass) + '@';
+                _options.headers['proxy-authorization'] = 'Basic ' + new Buffer(proxyObj.user + ':' + proxyObj.pass).toString('base64');
             }
-            defaults.proxy = 'http://' + auth + proxyObj.host;
+            //defaults.proxy = 'http://' + auth + proxyObj.host;
+            _options.hostname  = proxyObj.host;
             if( proxyObj.port )
             {
-                defaults.proxy += (':' + proxyObj.port);
+                //defaults.proxy += (':' + proxyObj.port);
+                _options.port      = proxyObj.port;
             }
         }
-        var r = Request.defaults(defaults);
-        r(reqOptions, function (err, res, body) { 
-            if (!err && res.statusCode == 200) {
-                return callback(null, body);
-            }
 
-            if (body && body.error) {            
-                err = body.error.message || body.error;
+        _options.rejectUnauthorized = false;
+        _options.headers['pragma'] = 'no-cache';
+        _options.headers['cache-control']= 'max-age=0, no-cache, no-store, must-revalidate';
+        _options.headers['Accept-Encoding'] = 'gzip';
+        _options.headers['User-Agent'] = 'gzip';
+        
+        fetch.fetchUrl(url, _options, function (err, res, body) {
+          
+            if (!err && res.status == 200) {
+                body = body.toString();
+                return callback(null, body);
             }
 
             if (err) {
                 return callback(err);
+            }
+            if (body && body.error) {            
+                err = body.error.message || body.error;
             }
 
             // unknown error
