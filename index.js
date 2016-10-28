@@ -142,7 +142,7 @@ var Client = module.exports = function(config) {
         fetch.fetchUrl(url, _options, function (err, res, body) {
           
             if (!err && res.status == 200) {
-                body = body.toString();
+                body = JSON.parse(body.toString());
                 return callback(null, body);
             }
 
